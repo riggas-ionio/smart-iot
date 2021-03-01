@@ -65,7 +65,7 @@ Pull requests are welcome :-)</small>
 `{'source': 'https://www.tinkercad.com/things/ijmonNCOLBA', 'value': '449\r'}`  
 Το `source` δηλώνει από ποιο tinkercad thing προέρχονται τα δεδομένα, το `value` είναι η τιμή που έχει διαβαστεί από το serial monitor.
 
-Για να ξεκινήσετε, και καθώς το api που θέλετε να αξιοποιήσετε ίσως θέλει κάποιο άλλο format δεδομένων, σας παρέχετε ένα sample http post endpoint γραμμένο σε python το οποίο μπορείτε να αξιοποιήσετε/τροποποιήσετε όπως θέλετε.
+Για να ξεκινήσετε, και καθώς το api που θέλετε να αξιοποιήσετε ίσως θέλει κάποιο άλλο format δεδομένων, σας παρέχεται ένα sample http post endpoint γραμμένο σε python το οποίο μπορείτε να αξιοποιήσετε/τροποποιήσετε όπως θέλετε.
 
 ##### _ii-a Αποκτήστε πρόσβαση στο cloud ide GoormIDE_
 
