@@ -112,6 +112,53 @@ Pull requests are welcome :-)</small>
 * Αν όλα έχουν παει καλά, εκτελώντας το TinkerCad simulation (και αφού δώστε σωστό sampling period & http endpoint στο Chrome extension) θα πρέπει να βλέπετε τα δεδομένα να φτάνουν στο terminal του GoormIDE:  
 ![GoormIDE - terminal](_img/GoormIDE-terminal.png)  
 
+##### _ii-b .. ή κάντε τα όλα στο docker :-)_
+
+* Ξεκινήστε ένα docker container βασισμένο σε python3  
+`docker run -it -d --name smart-iot python`
+    * Μπείτε στον container  
+    `docker exec -it smart-iot bash`  
+    και εντός αυτού εκτελέστε τα βήματα που περιγράφονται πιο πάνω για το GoormIDE
+
+* Για να αποκτήσετε http***s*** πρόσβαση στον http post server σας αξιοποιήστε το [ngrok](https://ngrok.com/). Το ngrok δημιουργεί ένα tunnel από ένα (random) public url προς το service σας, με http και https.
+    * Μεταβείτε στο https://ngrok.com/ και κάνετε signup.
+        * Θα σας εμφανίσει ένα `personal Authtoken` το οποίο θα σας χρειαστεί σε λίγο.
+    * Μπείτε με ένα δεύτερο terminal μπείτε εντός του smart-iot container σας.  
+    `docker exec -it smart-iot bash`  
+    και εντός αυτού εκτελέστε:
+        * Κατεβάστε το ngrok (link για linux)  
+        `wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip`
+        * Αποσυμπιέστε το:  
+        `unzip ngrok-stable-linux-amd64.zip`
+        * Κάνετε authenticate τον εαυτό σας:  
+        `./ngrok authtoken <your_auth_token>`
+        * Ξεκινήστε το tunneling:  
+        `./ngrok http 80`
+        * Θα πρέπει να βλέπετε κάτι σαν:  
+        ```
+        ngrok by @inconshreveable                                                (Ctrl+C to quit)
+
+        Session Status                online                                                     
+        Account                       Dimitrios Ringas (Plan: Free)                              
+        Version                       2.3.35                                                     
+        Region                        United States (us)                                         
+        Web Interface                 http://127.0.0.1:4040                                      
+        Forwarding                    http://183cc2aafa8b.ngrok.io -> http://localhost:80        
+        Forwarding                    https://183cc2aafa8b.ngrok.io -> http://localhost:80       
+
+        Connections                   ttl     opn     rt1     rt5     p50     p90                
+                                      2       1       0.01    0.01    4.71    6.30               
+
+        HTTP Requests                                                                            
+        ```  
+        Σας ενδιαφέρει το forwarding url που ξεκινα με http***s***
+        * Στο google chrome extension θα πρέπει να δώσετε το  
+        `https://183cc2aafa8b.ngrok.io/post` (**μην ξεχάσετε το /post στο τέλος**).
+
+##### _ii-c .. ή, βέβαια, μπορείτε να κάνετε όλα τα παραπάνω απ' ευθείας στο pc σας :-)_
+
+Αρκεί να τρέξετε τον python κώδικα τοπικά στο pc σας και να εγκαταστήσετε το ngrok για tunneling σε αυτό.
+
 <small>_Disclaimer:_ το http post endpoint παρέχεται για να σας βοηθήσει να έχετε ένα minimal endpoint να _υποδεχθει_ τα δεδομένα που στέλνετε από το Arduino. Επεκτείνετε τον κώδικα προσθέτοντας κάποια _λογική_, συνδυάστε το με άλλα cloud based apis, κλπ. Για οποιαδήποτε δυσλειτουργία, bug (_it's not a bug, it's a feature_), επιθυμητή αλλαγή.. μη ρωτήσετε, _hack your way to it!_  
 Pull requests are welcome :-) </small>
 
