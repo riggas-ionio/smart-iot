@@ -164,3 +164,38 @@ Pull requests are welcome :-)</small>
 Pull requests are welcome :-) </small>
 
 _We wish you happy coding ! ☕_
+
+---
+
+### TinkerCad + MQTT
+
+Το MQTT (Message Queuing Telemetry Transport) είναι ένα ελαφρύ πρωτόκολλο δικτύου δημοσίευσης-εγγραφής (publish/subscribe) που μεταφέρει μηνύματα μεταξύ συσκευών. Το πρωτόκολλο συνήθως εκτελείται μέσω TCP/IP. Εδώ θα το χρησιμοποιήσουμε για να παρέχουμε σε πολλούς clients πρόσβαση στα δεδομένα που παράγει το Arduino μας.
+
+
+* Ήδη έχουμε καταφέρει τα δεδομένα που γράφει στο serial port το arduino να τα λαμβάνουμε σε ένα python script.
+Στον ίδιο server θα στήσουμε ένα MQTT Broker στον οποίο θα εγγράφονται (subscribe) διάφοροι clients.
+
+    * [Read the manual](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-ubuntu-18-04) ή ακολουθήστε τα ακόλουθα βήματα για να εγκαταστήσουμε mosquitto mqtt broker & clients καθώς και υποστήριξη για websockets.
+        * Εκτελέστε:
+        ```
+        sudo apt update
+        sudo apt install mosquitto mosquitto-clients
+        sudo service mosquitto start
+        ```
+        Αυτό ήταν! (Η τελευταία εντολή ξεκινά τον broker, τώρα..) Testing
+        * Σε ένα terminal εκτελέστε: `mosquitto_sub -h localhost -t test`
+        * Σε ένα διαφορετικό terminal εκτελέστε `mosquitto_pub -h localhost -t test -m "hello world"`
+        * Τι βλέπετε στον client που κάνατε subscribe στο mosquitto broker;
+
+* Τώρα πρέπει να συνδέσουμε τον python server μας (αυτό που δέχεται τα δεδομένα από το serial port του arduino) με το mosquitto broker. Το python script θα πρέπει για κάθε POST που δέχεται από το arduino να κάνει publish στο mosquitto. Από εκεί και πέρα, όποιος client ενδιαφέρεται θα πρέπει να κάνει subscribe στο broker και να περιμένει να λάβει μηνύματα.
+    * Θα χρησιμοποιήσουμε τη βιβλιοθήκη paho της python.
+        * Εκτελούμε (εντός του φακέλου smart-iot) `git fetch origin master` ώστε να κατέβει από το github η νέα έκδοση του python server script. Οι διαφορές που αυτή έχει:
+            * Έχει προστέθεί στο `post-server/requirements.txt` μια νέα γραμμή `paho-mqtt`
+            * Έχει γίνει μικρή τροποποίηση στο `post-server/main.py` ώστε όταν ξεκινά ο flask server να κάνει connect στο mosquitto broker και για κάθε μήνυμα που λαμβάνει να κάνει ένα publish σε κατάλληλο topic στο broker.
+        * Εκτελούμε (εντός του φακέλου smart-iot/post-server) `pip install -r requirements.txt` ώστε να εγκατασταθεί η βιβλιοθήκη paho
+        * Ξεκινούμε το python flask server
+    * Ξεκινούμε ένα TinkerCad simulation, πχ [αυτό](https://www.tinkercad.com/things/ijmonNCOLBA-dazzling-hillar) - ενεργοποιούμε το Chrome plugin που έχουμε - συνδέουμε Chrome και python flask server
+    * Κάντε (σε κάποιο terminal) subscribe στο topic `arduino/raw` και δείτε τις τιμές όπως λαμβάνονται από το arduino :-)
+
+***ToDo σας***: Τροποποιήστε το main.py ώστε πέρα από το `arduino/raw` να κάνει publish και σε δύο ακόμη topics τα `arduino/lows` και `arduino/highs` όταν οι τιμές που λαμβάνει από το arduino είναι αντίστοιχα πολύ χαμηλές ή πολύ υψηλές.
+***ToDo σας***: Ακολουθήστε τις οδηγίες [εδώ](https://github.com/courses-ionio/sw-lab#git-commitmqtt-2-slack) ώστε να αποκτήσετε ένα (δωρεάν) account στο slack, να δημιουργήσετε εντός αυτού ένα workspace και να ενεργοποιήσετε ένα webhook. Κάντε POST στο slack όποτε οι τιμές που δίνει το arduino σας είναι πολύ υψηλές ή πολύ χαμηλές, με αξιοποίηση της mqttwarn python βιβλιοθήκης. (Ουσιαστικά κάντε subscribe με το mqttwarn στο mosquitto και από το mqttwarn προωθήστε τα nottifications στο slack). 
