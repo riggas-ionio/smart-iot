@@ -59,15 +59,17 @@ Docker compose YML file:
     ```
     * Then run a producers client container: `docker run -ti --name iot_prod -v $(PWD):/code my_python_env`
         * Within that container run a simulated IoT sensor that published to the kafka broker:  
-        `root@fcbb162c8bca:/code# python3 /code/demo-1/iot_producer.py 192.168.1.6:29092 SenseTemp_01 -2 22`  
-        This code uses confluent's python kafka library and connects to kafka broker `192.168.1.6:29092` _(notice, we connect to the port that is available for outside docker connections, we opt not to join the confluent network, thus we simulate the fact that clients can be on different physical/virtual networks)_ and simulates a temperature sensor named `SenseTemp_01` that sends a reading (every 3 to 10 sec, random delay) of a value between -2 and 22.
+        `root@fcbb162c8bca:/code# python3 /code/demo-1/iot_producer.py 192.168.1.6:29092 demo1test1 SenseTemp_01 -2 22`  
+        This code uses confluent's python kafka library and connects to kafka broker `192.168.1.6:29092` _(notice, we connect to the port that is available for outside docker connections, we opt not to join the confluent network, thus we simulate the fact that clients can be on different physical/virtual networks)_ and simulates a temperature sensor named `SenseTemp_01` that sends a reading (every 3 to 10 sec, random delay) of a value between -2 and 22 to topic `demo1test1`.
         * Run the same command with altered sensor names and value ranges in order to simulate multiple sensors.
 
     * Run a consumer client container: `docker run -ti --name iot_cons -v $(PWD):/code my_python_env`
         * Within that container run a consumer code that reads messages published to the kafka broker:  
-        `root@15cab5f7aaf0:/code# python3 /code/demo-1/iot_consumer.py 192.168.1.6:29092 numbers`  
-        This code uses confluent's python kafka library and connects to kafka broker `192.168.1.6:29092` _(notice, we connect to the port that is available for outside docker connections, we opt not to join the confluent network, thus we simulate the fact that clients can be on different physical/virtual networks)_ and simulates kafka consumer that reads all messages that are sent to topic `demo1`.
+        `root@15cab5f7aaf0:/code# python3 /code/demo-1/iot_consumer.py 192.168.1.6:29092 demo1test1`  
+        This code uses confluent's python kafka library and connects to kafka broker `192.168.1.6:29092` _(notice, we connect to the port that is available for outside docker connections, we opt not to join the confluent network, thus we simulate the fact that clients can be on different physical/virtual networks)_ and simulates kafka consumer that reads all messages that are sent to topic `demo1test1`.
         * As with producers, you can also run multiple consumers; each consumer has set `'auto.offset.reset': 'earliest'` thus reads _all_ messages stored on kafka broker (limited only by the topics retention period).
+
+    * Make sure you use an IP address where the docker compose multi-container app host listens to, instead of `192.168.1.6` in the examples above.
 
 ---
 Resources:
