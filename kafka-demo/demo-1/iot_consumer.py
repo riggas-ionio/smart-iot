@@ -33,7 +33,6 @@ while True:
     if msg.error():
         print("Consumer error: {}".format(msg.error()))
         continue
-
     print('Received message: {}'.format(msg.value().decode('utf-8')))
 
 c.close()

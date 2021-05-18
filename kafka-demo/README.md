@@ -54,6 +54,8 @@ Docker compose YML file:
     RUN apt-get install -y python3
     RUN apt-get install -y python3-pip
     RUN pip3 install confluent-kafka
+    RUN pip3 install paho-mqtt
+    RUN apt-get install -y mosquitto  mosquitto-clients
 
     WORKDIR /code
     ```
@@ -70,6 +72,29 @@ Docker compose YML file:
         * As with producers, you can also run multiple consumers; each consumer has set `'auto.offset.reset': 'earliest'` thus reads _all_ messages stored on kafka broker (limited only by the topics retention period).
 
     * Make sure you use an IP address where the docker compose multi-container app host listens to, instead of `192.168.1.6` in the examples above.
+
+## Demo 2: Docker-based kafka broker, mqtt broker and host-based consumer producer
+
+![Demo 2](./demo-1/docker-mqtt-kafka.png)
+
+* Start a new container for the mqtt bridge: `docker run -ti --name mqtt2kafka -v $(PWD):/code my_python_env`  
+    **N.B.:**  
+    * **If an MQTT broker is available** (and accessible via network) skip _Else_ and use that broker url and port.
+    * **Else** using the above python-based image to engage an MQTT broker:
+        * Within the new `mosquitto` container kick-off mosquitto mqtt broker: `/etc/init.d/mosquitto start`
+        * Note that mosquitto broker accepts connections on port `1883`.
+    * In the same container also run a custom python-based mqtt-to-kafka bridge: `python3 /code/demo-1/mqtt_to_kafka.py 127.0.0.1 1883 edge_topic 192.168.1.6:29092 demo1test1`
+    * (Don't create yet another container, just) Attach another shell to `mosquitto` container: `docker exec -ti mqtt2kafka /bin/bash`
+        * On that shell, publish something to MQTT: `mosquitto_pub -h localhost -t edge_topic -m "{'sensor_id':'Edge_sensor_1', 'value':-1}"`
+            * check `mqtt_to_kafka.py`'s output, message is received and forwarded
+            * check `iot_consumer.py`'s output (that is still running, right?)
+            * Attach another shell, start another `iot_consumer.py`, do you get all messages history replayed? If not, why not? How can you get a throw-in-and-read-all-history-client?
+
+
+
+
+
+
 
 ---
 Resources:

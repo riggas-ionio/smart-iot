@@ -8,5 +8,7 @@ RUN apt-get update && apt-get install -y build-essential
 RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 RUN pip3 install confluent-kafka
+RUN pip3 install paho-mqtt
+RUN apt-get install -y mosquitto  mosquitto-clients
 
 WORKDIR /code
