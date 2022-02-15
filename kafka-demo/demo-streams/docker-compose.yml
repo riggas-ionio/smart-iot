@@ -1,0 +1,17 @@
+version: '3.5'
+
+networks:
+  confluent:
+    name: confluent
+
+services:
+  java:
+      image: openjdk:8
+      networks:
+      - confluent
+      # stdin_open: true # docker run -i
+      # tty: true        # docker run -t
+      volumes:
+      - /Users/dimitris/Nextcloud/FamilyShared/_Ionio/_my_classes/2022.02-SmartIoT/_github/smart-iot/kafka-demo/demo-streams/target:/app
+      # command: bash -c "cd /app && java -jar demo-streams-1.0-SNAPSHOT-jar-with-dependencies.jar"
+      command: tail -F /dev/null

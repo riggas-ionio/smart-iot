@@ -19,7 +19,7 @@ print('Press Ctrl+C to exit')
 
 c = Consumer({
     'bootstrap.servers': sys.argv[1],
-    'group.id': 'demogroup',
+    'group.id': 'demogroup6',
     'auto.offset.reset': 'earliest'
 })
 
