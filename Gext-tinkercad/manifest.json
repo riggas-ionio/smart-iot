@@ -1,0 +1,13 @@
+{
+  "name": "TinkerCad Things Serial Monitor Wire-Tapping",
+  "description": "Taps on arduino serial monitor; prints on console log & can POST to remote endpoint.",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+      "name": "Click to configure on serial monitor tapping"
+  },
+  "background":{
+      "scripts":["background.js"]
+  },
+  "permissions":["https://www.tinkercad.com/things/*", "storage"]
+}
