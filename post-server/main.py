@@ -2,7 +2,6 @@
 from flask import Flask, request
 from flask_cors import CORS
 import json
-import paho.mqtt.client as mqtt
 
 # create the Flask app
 app = Flask(__name__, static_url_path='')
@@ -26,13 +25,5 @@ def post():
 def send_js(path):
     return send_from_directory('js', path)
 
-
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-
 if __name__ == "__main__":
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.connect("localhost")
-    client.loop_start()
     app.run(host="0.0.0.0", port=80, debug=True)
