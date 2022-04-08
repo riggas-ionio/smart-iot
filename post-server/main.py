@@ -18,7 +18,6 @@ def post():
         return 'Please POST to /post'
     request_data = request.json
     print(format(request_data))
-    client.publish("arduino/raw", format(request_data))
     return json.dumps(request_data)
 
 @app.route('/static/js/<path:path>')
