@@ -194,3 +194,53 @@ Pull requests are welcome :-)</small>
     | Timestamp | Luminocity | Temperature|
     |-----------|-----------:|-----------:|  
     | 2020-01-01 13:10:10 |   560 |    23 |
+
+---
+
+## Lab #8
+
+Είναι πιο εύκολο να δημιουργήσετε ένα νέο container στο GoormIDE, όπως είχαμε κάνει κάνει σε προηγούμενο εργαστήριο, βασισμένο σε **python** και στο οποίο, _στα Additional modules_, να ☑ τσεκάρετε την εγκατάσταση `MySQL` και `mysql-ctl`.
+![GoormIDE - mysql](_img/GoormIDE-mysql.png)  
+
+Μετά τη δημιουργία του νέου container, κάνετε πάλι `git clone` το repo του μαθήματος.
+
+* H MySQL (ο server της) ξεκινά από το τερματικό με την εντολή: `mysql-ctl start`.
+* Δημιoυργήστε μια βάση και ένα table εντός του οποίου θα αποθηκεύονται οι μετρήσεις που φτάνουν στο GoormIDE. Ένα `sql script` σαν αυτό αρκεί:
+
+    ```
+    CREATE DATABASE iot_db;
+    USE iot_db;
+    CREATE TABLE iot_readings
+    (
+        tstamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        temperature    FLOAT(6,2),
+        luminocity     INT
+    );
+    INSERT INTO iot_readings(temperature, luminocity) VALUES (23.5, 267);
+    SELECT * FROM iot_readings;
+    ```
+    _Αν τρέξετε αυτό τον κώδικα σε ένα mysql server (στο οποίο έχετε κατάλληλα δικαιώματα) θα δείτε ως output:_
+    ```
+    +---------------------+-------------+------------+
+    | tstamp              | temperature | luminocity |
+    +---------------------+-------------+------------+
+    | 2022-04-14 19:56:10 |       23.50 |        267 |
+    +---------------------+-------------+------------+
+    ```
+
+* Τώρα χρειάζεται να επέμβετε στο `main.py` που τρέχει το Flask server, και συγκεκριμένα την `def post()` ώστε τα δεδομένα που φτάνουν σε μορφή json object να τα εισάγετε στη βάση που μόλις δημιουργήσατε.
+    * Μελετήστε το αποτέλεσμα του print στη γραμμή 20 του `main.py`:
+    ```
+    {'source': 'https://www.tinkercad.com/things/ijmonNCOLBA-photocell-voltage-divider/editel', 'value': '{"lum":3}'}
+    ```
+    N.B.: Αν δοκιμάστε να κάνετε `json.loads` αυτό το string θα λάβετε ένα μήνυμα λάθους *json.decoder.JSONDecodeError: **Expecting property name enclosed in double quotes**: line ... column ... (char ...)*
+    Θα πρέπει να  αντικαταστήσετε σε αυτό το string τα ' με ", αλλά αφού πρώτα αντικαταστήσετε τα " εντός του value με \\".
+    * _Όταν πάψετε να έχετε JSONDecodeErrors θα μπορείτε πλέον να πάρετε την τιμή εντός του value διαβάζοντας το αντίστοιχο key, πχ `json_obj["value"]`, προσέξτε όμως και αυτό με τη σειρά του είναι string που πρέπει να γίνει json.loads!_
+
+#### Β' μέρος:  Οπτικοποίηση με Graphana
+
+* Επόμενο βήμα, η [εγκατασταση Graphana στο GoormIDE container](https://grafana.com/docs/grafana/latest/installation/debian/).
+* Δημιουργήστε ένα Datasource το οποίο να συνδέεται με τη MySQL που έχετε εγκαταστήσει νωρίτερα.
+* Δημιουργήστε ένα panel στο οποίο να απεικονίσετε τα δύο timeseries που έχετε δημιουργήσει
+
+    ![Graphana](./_img/Graphana.gif)
