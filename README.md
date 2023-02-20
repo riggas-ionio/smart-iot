@@ -10,7 +10,7 @@
 
 ***Task (στο TinkerCad):***
 
-* Δημιουργήστε student account TinkerCad https://www.tinkercad.com/joinclass/RANG3HGFW6A7 (Join with email / username).
+* Δημιουργήστε student account TinkerCad link: https://www.tinkercad.com/joinclass/5WTNW9UDV (Join with email / username).
 * Δημιουργήστε ένα κύκλωμα Arduino - αντίστασης - led και το σχετικό πρόγραμμα το οποίο ανάβει και σβύνει το led κάθε 1 sec.
 * Δημιουργήστε ένα κύκλωμα Arduino - αντίστασης - led και το σχετικό πρόγραμμα το οποίο ανάβει και σβύνει το led κάθε 1, μετά κάθε 2, μετά κάθε 3, κ.ο.κ. μέχρι 5 sec και στη συνέχεια ο χρόνος να μειώνεται σε κάθε επανάληψη.
 
