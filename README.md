@@ -67,7 +67,7 @@
 Ο προγραμματισμός απλά απαιτεί την ανάγνωση της τιμής του αντίστοιχου pin με χρήση της [digitalRead()](https://www.arduino.cc/reference/en/language/functions/digital-io/digitalread/) και έλεγχο αν η τιμή του είναι `LOW` ή `HIGH`.
 * Γνωριμία με το [Servo motor](https://docs.arduino.cc/learn/electronics/servo-motors).  
 Ο σερβοκινητήρας είναι μια μικρή συσκευή που διαθέτει έναν άξονα εξόδου. Αυτός ο άξονας μπορεί να τοποθετηθεί σε συγκεκριμένες γωνιακές θέσεις στέλνοντας στον σερβοκινητήρα ένα κωδικοποιημένο σήμα. Όσο το κωδικοποιημένο σήμα υπάρχει στη γραμμή εισόδου, ο σερβοκινητήρας διατηρεί τη γωνιακή θέση του άξονα. Εάν το κωδικοποιημένο σήμα αλλάξει, η γωνιακή θέση του άξονα αλλάζει.  
-Η σύνδεσή του σε ένα Arduino γίνεται με τα pins [5V, GRD και ένα ψηφιακό pin _ως έξοδο_](https://docs.arduino.cc/static/943895f1f578104f7af98741d69a7c97/4ef49/servo-sweep-circuit.png).   
+Η σύνδεσή του σε ένα Arduino γίνεται με τα pins [5V, GRD και ένα ψηφιακό pin _ως έξοδο_](https://docs.arduino.cc/static/2c491e90d07f613aad598fb3029340d6/29114/servo_circuit_knob.png).   
 Ο προγραμματισμός γίνεται με χρήση της βιβλιοθήκης `Servo.h` και της εντολής [_servo_.write(angle)](https://www.arduino.cc/en/Reference/ServoWrite) η οποία περιστρέφει τον άξονα του σερβοκινητήρα σε μια γωνία.
 
 ***Task (στο TinkerCad):***
